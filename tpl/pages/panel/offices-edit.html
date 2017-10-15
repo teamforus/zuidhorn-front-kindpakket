@@ -1,0 +1,67 @@
+
+<div class="section section-container">
+  <div class="wrapper"> 
+    <div class="section section-title">Edit office</div>
+    <div class="section section-panel section-panel-profile">
+      <div class="section-panel-inner">
+        <div class="profile-details">
+          <div class="profile-photo" ng-if="$ctrl.office.id &amp;&amp; $ctrl.office.preview != false"><img ng-src="{{ $ctrl.office.preview }}" alt=""/>
+            <div class="profile-photo-placeholder" ng-if="$ctrl.office.preview == false"><em class="mdi mdi-image"></em>PHOTO</div>
+          </div>
+          <div class="logo-title">Photo</div><a class="button button-success" href="#" ng-click="$ctrl.selectPhoto($event)"><em class="mdi mdi-attachment"></em>{{ $ctrl.office.id ? 'Change photo' : 'Select photo' }}</a>
+        </div>
+        <form class="form form-sm" ng-submit="$ctrl.submitForm($event, $ctrl.form.office)">
+          <div class="row">
+            <div class="col col-12">
+              <div class="form-heading">Details</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col col-6">
+              <div class="form-group">
+                <label class="label">Email</label>
+                <input class="form-control" type="email" placeholder="Email" ng-model="$ctrl.form.office.values.email"/>
+                <p class="text-danger" ng-repeat="error in $ctrl.form.office.errors.email track by $index" ng-bind="error"></p>
+              </div>
+            </div>
+            <div class="col col-6">
+              <div class="form-group">
+                <label class="label">Telephone</label>
+                <input class="form-control" type="text" placeholder="Telephone" ng-model="$ctrl.form.office.values.phone"/>
+                <p class="text-danger" ng-repeat="error in $ctrl.form.office.errors.phone track by $index" ng-bind="error"></p>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col col-12">
+              <div class="form-group">
+                <label class="label">Address</label>
+                <input class="form-control" type="text" placeholder="Address" ng-model="$ctrl.form.office.values.address"/>
+                <p class="text-danger" ng-repeat="error in $ctrl.form.office.errors.address track by $index" ng-bind="error"></p>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col col-12">
+              <div class="form-heading">Opening times</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col col-5th" ng-repeat="week_day in [0, 1, 2, 3, 4]">
+              <div class="form-group">
+                <label class="label">{{ ['MO', 'TU', 'WE', 'TH', 'FR'][$index] }}</label>
+                <select class="form-control" ng-options="schedule_option as schedule_option for schedule_option in $ctrl.schedule_options" ng-model="$ctrl.form.office.values.schedules[week_day].start_time"></select>
+                <select class="form-control" ng-options="schedule_option as schedule_option for schedule_option in $ctrl.schedule_options" ng-model="$ctrl.form.office.values.schedules[week_day].end_time"></select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col col-12"><br/></div>
+          </div>
+          <button class="hidden" type="submit"></button>
+        </form>
+        <div class="buttons"> <a class="button button-success" href="#" ng-click="$ctrl.submitForm($event, $ctrl.form.office)">Submit</a><a class="button button-muted" ui-sref="panel-offices">Cancel</a></div>
+      </div>
+    </div>
+  </div>
+</div>

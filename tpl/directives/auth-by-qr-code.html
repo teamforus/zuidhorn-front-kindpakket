@@ -1,0 +1,26 @@
+
+<div class="section section-auth" ng-class="{'show-qr-code' : qr_code}"> 
+  <div class="section-auth-header">
+    <div class="header-row">
+      <div class="wrapper wrapper-lg">
+        <div class="header-col">
+          <h1> <strong>Zuidhorn. </strong>Kindpakket Leverancier</h1>
+          <p>
+             Welkom om de website van het kindpakket Zuidhorn. Op deze website vindt u een overzicht van de deelnemende winkeliers. Meer weten over het kindpakket?<br/>Klik hier</p>
+        </div>
+        <div class="header-col">
+          <div class="qr-code-login text-center" ng-if="$root.credentials">
+            <div><a class="button button-white" ui-sref="panel-offices" href="#">Go to pannel</a></div><br/>
+            <div><a class="button button-white" ui-sref="sign-out" href="#">Sign Out</a></div>
+          </div>
+          <div class="qr-code-login" ng-if="!$root.credentials">
+            <div class="qr-code-icon"><em class="mdi mdi-qrcode"></em></div><a class="button button-white" href="#" ng-click="showQrCode($event)"><em class="mdi mdi-qrcode"></em>Login with QR-Code</a>
+          </div>
+          <div class="qr-code-scan" ng-if="!$root.credentials"><img class="qr-code-scan-img" ng-src="{{ qr_code }}" alt=""/>
+            <p class="qr-code-scan-desc">Please scan this qr code using your device.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
