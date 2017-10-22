@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="shopkeeperApp" ng-controller="BaseController">
+<html lang="en" ng-app="kindpakketApp" ng-controller="BaseController">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title ng-bind="'Shopkeeper Panel - ' + $root.$state.current.data.title"></title>
+    <title ng-bind="'Zuidhorn. Kindpakket - ' + $root.$state.current.data.title"></title>
     <link rel="icon" href="/assets/img/favicon.png">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i&amp;amp;subset=latin-ext" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="/assets/dist/mdi/css/materialdesignicons.min.css">
@@ -12,36 +12,100 @@
     <base href="/">
   </head>
   <body ng-cloak>
-    <header class="section section-landing-header" ng-if="$state.current.name == 'welcome'"><a class="logo" href="./"><img src="./assets/img/logo.png" alt="Logo"></a></header>
-    <header class="section section-panel-header" ng-if="$state.current.name != 'welcome'">
-      <div class="wrapper">
-        <div class="business-info">
-          <div class="business-info-logo"><img ng-src="{{ $root.user.shop_keeper.preview || './assets/img/no-image-square.png' }}"></div>
-          <div class="business-title">
-            <div class="business-title-name" ng-bind="$root.user.shop_keeper.name"></div>
-            <div class="business-title-actions"><a class="button button-success button-xs" ui-sref="profile-edit"><em class="mdi mdi-settings"></em>Edit</a><a class="button button-primary button-xs" ui-sref="sign-out"><em class="mdi mdi-logout"></em>Logout</a></div>
-          </div>
-          <div class="business-details"><span><strong>Kvk: </strong>{{ $root.user.shop_keeper.kvk_number }} <span>&nbsp;|&nbsp; </span></span><span><strong>BTW: </strong><span ng-class="{'text-muted' : !$root.user.shop_keeper.btw_number}">
-                 {{ $root.user.shop_keeper.btw_number || 'Geen data' }}</span><span>&nbsp;|&nbsp; </span></span><span><strong>IBAN:  </strong>{{ $root.user.shop_keeper.iban }} </span><br><span><strong>Categories: </strong><span ng-repeat="category in shopkeeper_categories track by $index">{{ category.name }}{{ $index < shopkeeper_categories.length - 1 ? ', ' : '' }}</span></span></div>
-        </div>
-        <div class="panel-header-nav"><a class="panel-header-nav-it" ui-sref="panel-offices" ng-class="{'active': $state.current.name == 'panel-offices'}">
-             Offices ({{ $root.count_offices }})</a><a class="panel-header-nav-it" ui-sref="panel-transactions" ng-class="{'active': $state.current.name == 'panel-transactions'}">
-             Transactions ({{ $root.count_transactions }})</a></div>
-      </div>
-    </header>
     <div ui-view></div>
+    <div class="popups">
+      <div class="popup popup-auth">
+        <div class="popup-backdrop" ng-click="auth.closeModals($event)"></div>
+        <div class="popup-inner"><a class="popup-close mdi mdi-close" href="#" ng-click="auth.closeModals($event)"></a>
+          <div class="popup-heading">Login</div>
+          <form class="form" ng-submit="auth.signInSubmit($event, forms.login)">
+            <div class="row">
+              <div class="col col-12">
+                <div class="form-group">
+                  <label class="label">Email</label>
+                  <input class="form-control" type="email" placeholder="Email" ng-model="forms.login.values.email">
+                  <p class="text-danger" ng-repeat="error in forms.login.errors.email track by $index" ng-bind="error"></p>
+                </div>
+              </div>
+              <div class="col col-12">
+                <div class="form-group">
+                  <label class="label">Password</label>
+                  <input class="form-control" type="password" placeholder="Password" ng-model="forms.login.values.password">
+                  <p class="text-danger" ng-repeat="error in forms.login.errors.password track by $index" ng-bind="error"></p>
+                </div>
+              </div>
+            </div>
+            <div class="row"><br>
+              <div class="col col-12">
+                <div class="form-group text-center">
+                  <button class="button button-success" type="submit">Submit</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="popup popup-voucher">
+        <div class="popup-backdrop" ng-click="auth.closeModals($event)"></div>
+        <div class="popup-inner"><a class="popup-close mdi mdi-close" href="#" ng-click="auth.closeModals($event)"></a>
+          <div class="popup-heading">Activate voucher</div>
+          <form class="form" ng-hide="forms.voucher.submit" ng-submit="auth.activateVoucherSubmit($event, forms.voucher)">
+            <div class="row">
+              <div class="col col-12">
+                <div class="form-group">
+                  <label class="label">Voucher</label>
+                  <input class="form-control" type="text" placeholder="Voucher" ng-model="forms.voucher.values.code">
+                  <p class="text-danger" ng-repeat="error in forms.voucher.errors.code track by $index" ng-bind="error"></p>
+                </div>
+              </div>
+              <div class="col col-12">
+                <div class="form-group">
+                  <label class="label">Email</label>
+                  <input class="form-control" type="email" placeholder="Email" ng-model="forms.voucher.values.email">
+                  <p class="text-danger" ng-repeat="error in forms.voucher.errors.email track by $index" ng-bind="error"></p>
+                </div>
+              </div>
+            </div>
+            <div class="row"><br>
+              <div class="col col-12">
+                <div class="form-group text-center">
+                  <button class="button button-success" type="submit">Submit</button>
+                </div>
+              </div>
+            </div>
+          </form>
+          <div class="voucher-activation-loading" ng-show="forms.voucher.submit"><img src="./assets/img/progress.gif" alt=""></div>
+        </div>
+      </div>
+      <div class="popup popup-voucher-success">
+        <div class="popup-backdrop" ng-click="auth.closeModals($event)"></div>
+        <div class="popup-inner"><a class="popup-close mdi mdi-close" href="#" ng-click="auth.closeModals($event)"></a>
+          <div class="modal-success">
+            <div class="modal-success-title"><em class="mdi mdi-checkbox-multiple-marked-circle-outline"> </em>Voucher Activated</div>
+            <div class="modal-success-desc">We have sent the password to your email</div>
+          </div>
+        </div>
+      </div>
+      <div class="popup popup-qr-code-email-success">
+        <div class="popup-backdrop" ng-click="auth.closeModals($event)"></div>
+        <div class="popup-inner"><a class="popup-close mdi mdi-close" href="#" ng-click="auth.closeModals($event)"></a>
+          <div class="modal-success">
+            <div class="modal-success-title"><em class="mdi mdi-checkbox-multiple-marked-circle-outline"> </em>QR-Code sent</div>
+          </div>
+        </div>
+      </div>
+    </div>
     <footer class="section section-footer">Copyright © 2017 RMinds. All Rights Reserved. <span>| </span><a href="#">Algemene voorwaarden</a></footer>
-    <script>var qdt_c = {"platform":{"source":"kindpakket-shopkeeper-panel","libs":{"jquery":true,"bootstrap_3":false,"angular":true,"angular_2":false,"underscore":false,"underscore.string":false,"mdi":true},"libs_data":{},"paths":{"root":"../kindpakket-shopkeeper-panel","assets_root":"../kindpakket-shopkeeper-panel/assets","clean_paths":["../kindpakket-shopkeeper-panel"]},"assets":[{"from":"resources/assets/**/*","to":"assets"},{"from":"../../node_modules/angular-sanitize/angular-sanitize.min.js","to":"assets/dist/angular-sanitize"},{"from":"../../node_modules/@uirouter/angularjs/release/angular-ui-router.min.js","to":"assets/dist/@uirouter/angularjs"},{"from":"../../node_modules/nanoscroller/bin/javascripts/jquery.nanoscroller.js","to":"assets/dist/nanoscroller"},{"from":"../../node_modules/qrcodejs/qrcode.js","to":"assets/dist/qrcodejs"},{"from":"../../node_modules/moment/min/moment-with-locales.min.js","to":"assets/dist/moment/"},{"from":"../../node_modules/core-js/client/core.min.js","to":"assets/dist/core-js"}],"server":{"path":"/","port":4000},"tasks":{"disabled":{"pug":false,"ts":true,"js":false,"assets":false},"settings":{"less":[],"js":[{"src":["app.js","angular/*.js","angular/controllers/**/**.js","angular/components/**/**.js","angular/directives/**/**.js","angular/providers/**/**.js","angular/services/**/**.js","angular/filters/**/**.js"],"dest":["/"],"name":"app.js"}],"scss":[{"src":["style.scss"],"watch":["includes/**/*.scss"],"dest":["/"],"name":"style.min.css"}],"pug":[{"path":"/","src":["*.pug"],"watch":["layout/**/*.pug"],"dest":["/"]},{"path":"/raw/tpl","src":["raw/**/*.pug"],"dest":["/tpl"],"watch":[]}]}},"name":"kindpakket-shopkeeper-panel","env_data":{"html5Mode":{"enable":true,"basePath":"/"},"apiUrl":"http://mvp.forus.io/api"}}};
-      var env_data = {"html5Mode":{"enable":true,"basePath":"/"},"apiUrl":"http://mvp.forus.io/api"};
+    <script>var qdt_c = {"platform":{"source":"zuidhorn-front-winkelier","libs":{"jquery":true,"bootstrap_3":false,"angular":true,"angular_2":false,"underscore":false,"underscore.string":false,"mdi":true},"libs_data":{},"paths":{"root":"../zuidhorn-front-winkelier","assets_root":"../zuidhorn-front-winkelier/assets","clean_paths":["../zuidhorn-front-winkelier"]},"assets":[{"from":"resources/assets/**/*","to":"assets"},{"from":"../../node_modules/angular-sanitize/angular-sanitize.min.js","to":"assets/dist/angular-sanitize"},{"from":"../../node_modules/@uirouter/angularjs/release/angular-ui-router.min.js","to":"assets/dist/@uirouter/angularjs"},{"from":"../../node_modules/nanoscroller/bin/javascripts/jquery.nanoscroller.js","to":"assets/dist/nanoscroller"},{"from":"../../node_modules/core-js/client/core.min.js","to":"assets/dist/core-js"}],"server":{"path":"/","port":3500},"tasks":{"disabled":{"pug":false,"ts":true,"js":false,"assets":false},"settings":{"less":[],"js":[{"src":["app.js","angular/*.js","angular/controllers/**/**.js","angular/components/**/**.js","angular/directives/**/**.js","angular/providers/**/**.js","angular/services/**/**.js","angular/filters/**/**.js"],"dest":["/"],"name":"app.js"}],"scss":[{"src":["style.scss"],"watch":["includes/**/*.scss"],"dest":["/"],"name":"style.min.css"}],"pug":[{"path":"/","src":["*.pug"],"watch":["layout/**/*.pug"],"dest":["/"]},{"path":"/raw/tpl","src":["raw/**/*.pug"],"dest":["/tpl"],"watch":[]}]}},"name":"zuidhorn-front-winkelier","env_data":{"html5Mode":{"enable":true,"basePath":"/"},"apiUrl":"http://mvp.forus.io/client/api","credentials_key":"zuidhorn-front-winkelier-credentials"}}};
+      var env_data = {"html5Mode":{"enable":true,"basePath":"/"},"apiUrl":"http://mvp.forus.io/client/api","credentials_key":"zuidhorn-front-winkelier-credentials"};
       
     </script>
     <script src="/assets/dist/jquery/jquery.min.js"></script>
     <script src="/assets/dist/angular/angular.min.js"></script>
     <script src="/assets/dist/@uirouter/angularjs/angular-ui-router.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOB-z-WzmDqwM4OvOMLv0L47UsHcj7dYc"></script>
     <script src="/assets/dist/core-js/core.min.js"></script>
-    <script src="/assets/dist/qrcodejs/qrcode.js"></script>
     <script src="/assets/dist/nanoscroller/jquery.nanoscroller.js"></script>
-    <script src="/assets/dist/moment/moment-with-locales.min.js"></script>
     <script src="/assets/js/app.js"></script>
   </body>
 </html>
