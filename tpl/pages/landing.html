@@ -17,22 +17,6 @@
     </div>
   </div>
 </header>
-<div class="section section-categories">
-  <div class="wrapper">
-    <h1 class="section-header">Door te klikken op de blokken zoekt u de winkels die meedoen aan het systee</h1>
-    <div class="categories-list">
-      <div class="categories-list-inner">
-        <div class="categories-item" ng-repeat="category in $ctrl.categories track by $index">
-          <div class="categories-item-inner" ng-class="{active: category.selected}" ng-click="$ctrl.selectCategory($event, category)"><img class="categories-item-img" ng-src="{{ category.preview }}" alt=""/>
-            <div class="categories-item-radio"></div>
-            <div class="categories-item-title" ng-bind="category.name"></div>
-          </div>
-        </div>
-      </div>
-      <div class="categories-list-actions"><a class="button button-primary" href="#" ng-click="$ctrl.selectAll($event)"><em class="mdi mdi-chevron-double-right"></em>Selecteer alles</a><a class="button button-success" href="#" ng-click="$ctrl.updateOfficesCategory($event)"><em class="mdi mdi-magnify"></em>Filter</a></div>
-    </div>
-  </div>
-</div>
 <div class="section section-offices">
   <div class="section-offices-list">
     <div class="section-offices-list-header">
@@ -52,6 +36,22 @@
     </div>
   </div>
   <div class="section-offices-map" google-map="google-map"></div>
+</div>
+<div class="section section-categories">
+  <div class="wrapper">
+    <h1 class="section-header">Door te klikken op de blokken zoekt u de winkels die meedoen aan het systee</h1>
+    <div class="categories-list">
+      <div class="categories-list-inner">
+        <div class="categories-item" ng-repeat="category in $ctrl.categories track by $index">
+          <div class="categories-item-inner" ng-class="{active: category.selected}" ng-click="$ctrl.selectCategory($event, category)"><img class="categories-item-img" ng-src="{{ category.preview }}" alt=""/>
+            <div class="categories-item-radio"></div>
+            <div class="categories-item-title" ng-bind="category.name"></div>
+          </div>
+        </div>
+      </div>
+      <div class="categories-list-actions"><a class="button button-primary" href="#" ng-click="$ctrl.selectAll($event)"><em class="mdi mdi-chevron-double-right"></em>Selecteer alles</a><a class="button button-success" href="#" ng-click="$ctrl.updateOfficesCategory($event)"><em class="mdi mdi-magnify"></em>Filter</a></div>
+    </div>
+  </div>
 </div>
 <div class="section section-how-it-works">
   <div class="bg-image"></div>
