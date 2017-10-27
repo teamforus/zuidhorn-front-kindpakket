@@ -1,17 +1,71 @@
 
-<div auth-by-qr-code="auth-by-qr-code"></div>
-<div class="section section-download-app">
+<header class="section section-header">
   <div class="wrapper">
-    <div class="bg-text">DOWNLOAD APP</div>
-    <div class="download-row">
-      <div class="download-col">
-        <div class="download-inner">
-          <h1>
-             De app is momenteel <br/>alleen beschikbaar voor iOS</h1><a class="button button-app-store" href="#"><em class="mdi mdi-apple"></em>
-            <div class="button-body"><span>Download de app vanuit de</span><strong>APP STORE</strong></div></a>
+    <div class="section-header-inner" ng-show="$root.credentials"><a class="logo" ui-sref="landing"><img src="./assets/img/logo.png"/></a>
+      <div class="section-header-actions">
+        <div class="button-group">
+          <div class="button button-white disabled"><span>Huidige Budget &nbsp; </span><strong>€</strong><strong ng-bind="$root.targetVoucher.funds"></strong></div><a class="button button-white" ui-sref="account"><span class="mdi mdi-account"></span>Mijn Account</a>
+        </div><a class="button button-primary" href="#" ng-click="$root.auth.signOut($event)"><em class="mdi mdi-logout"></em>Logout</a>
+      </div>
+    </div>
+    <div class="section-header-inner" ng-show="!$root.credentials"><a class="logo" href="./"><img src="./assets/img/logo.png" alt=""/></a>
+      <div class="section-header-actions"><a class="button button-success" href="#" ng-click="$root.auth.activateVoucher($event)"><em class="mdi mdi-ticket-confirmation"></em>Activatiecode</a><a class="button button-white" href="#" ng-click="$root.auth.signIn($event)"><em class="mdi mdi-account"></em>Login</a></div>
+    </div>
+    <div class="section-header-text">
+      <div class="section-header-text-title"><strong>Zuidhorn. </strong>Kindpakket</div>
+      <div class="section-header-text-description">Welkom op de website van het kindpakket Zuidhorn. Het kindpakket is een jaarlijks ondersteunende regeling voor kinderen in de gemeente Zuidhorn.</div><a class="button button-success" href="#how-it-works" slow-scroll="slow-scroll"> <span>Lees meer over hoe het </span><span>systeem werkt</span></a>
+    </div>
+  </div>
+</header>
+<div class="section section-offices">
+  <div class="section-offices-list">
+    <div class="section-offices-list-header">
+      <h4>We hebben {{ $ctrl.locations.length }} winkel(s) gevonden. </h4><small>Selecteer een winkel om de locatie en details te tonen.</small>
+    </div>
+    <div class="section-offices-list-inner nano">
+      <div class="nano-content"> 
+        <div class="section section-panel" ng-repeat="location in $ctrl.locations track by $index" ng-click="$ctrl.selectLocation($event, location)" ng-class="{active: location.selected}">
+          <div class="office-li"><img class="office-li-thumb" ng-src="{{location.preview || 'assets/img/no-image.jpg'}}" alt=""/>
+            <div class="office-li-name" ng-bind="location.shopkeeper.name"></div>
+            <div class="office-li-description"><strong>Adres: </strong><span ng-bind="location.address || 'Geen data'"></span><br/><strong>Telefoonnummer: </strong><span ng-bind="location.phone || 'Geen data'"></span><br/><br/><strong class="text-primary">Openingstijden:</strong><br/>
+              <div><span class="br" ng-repeat="schedule in location.schedules track by $index"><strong>{{ ['MO', 'TU', 'WE', 'TH', 'FR'][$index] }}: </strong>{{ schedule.start_time }}-{{ schedule.end_time }}{{ $index < location.schedules.length - 1 ? ',' : '' }} </span></div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="download-col"><img src="./assets/img/ios-mockup.png"/></div>
+    </div>
+  </div>
+  <div class="section-offices-map" google-map="google-map"></div>
+</div>
+<div class="section section-categories">
+  <div class="wrapper">
+    <h1 class="section-header">Kies de categorie om een overzicht te krijgen van de winkels die uw kindpakket voucher accepteren</h1>
+    <div class="categories-list">
+      <div class="categories-list-inner">
+        <div class="categories-item" ng-repeat="category in $ctrl.categories track by $index">
+          <div class="categories-item-inner" ng-class="{active: category.selected}" ng-click="$ctrl.selectCategory($event, category)"><img class="categories-item-img" ng-src="{{ category.preview }}" alt=""/>
+            <div class="categories-item-radio"></div>
+            <div class="categories-item-title" ng-bind="category.name"></div>
+          </div>
+        </div>
+      </div>
+      <div class="categories-list-actions"><a class="button button-primary" href="#" ng-click="$ctrl.selectAll($event)"><em class="mdi mdi-chevron-double-right"></em>Selecteer Alles</a><a class="button button-success" href="#" ng-click="$ctrl.updateOfficesCategory($event)"><em class="mdi mdi-magnify"></em>Filter</a></div>
+    </div>
+  </div>
+</div>
+<div class="section section-how-it-works">
+  <div class="bg-image"></div>
+  <div class="how-it-works-inner">
+    <h1 class="how-it-works-title" id="how-it-works">Hoe het systeem werkt</h1>
+    <div class="how-it-works-list">
+      <div class="how-it-works-item"> <em class="how-it-works-item-number">1</em>U heeft een brief van de gemeente ontvangen</div>
+      <div class="how-it-works-item"> <em class="how-it-works-item-number">2</em>In deze brief staat uw activatiecode</div>
+      <div class="how-it-works-item"> <em class="how-it-works-item-number">3</em>Via de acticatiecode knop op website wordt uw voucher geactiveerd.</div>
+      <div class="how-it-works-item"> <em class="how-it-works-item-number">4</em>U ziet vervolgens uw budget </div>
+      <div class="how-it-works-item"> <em class="how-it-works-item-number">5</em>U print uw voucher uit of u mailt de voucher naar uzelf toe</div>
+      <div class="how-it-works-item"> <em class="how-it-works-item-number">6</em>U kijkt vervolgens naar welke winkel(s) u wilt gaan</div>
+      <div class="how-it-works-item"> <em class="how-it-works-item-number">7</em>U zoekt één of meerdere prodducten uit en de winkelier scant uw voucher</div>
+      <div class="how-it-works-item"> <em class="how-it-works-item-number">8</em>De kosten worden direct in mindering gebracht op uw budget</div>
     </div>
   </div>
 </div>
@@ -21,52 +75,52 @@
       <div class="faq-heading">Veel gestelde vragen</div>
       <div class="faq-ul" tabulation="tabulation">
             <div class="faq-ul-li">
-              <div class="faq-ul-li-title" tabulation-tab="1"> Wanneer is de Android App beschikbaar?<em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
-              <div class="faq-ul-li-content" tabulation-pane="1">De Android App is in ontwikkeling en zal begin 2018 beschikbaar zijn.</div>
+              <div class="faq-ul-li-title" tabulation-tab="1"> Ik weet niet hoe ik moet inloggen; hoe de activatiecode werkt.<em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
+              <div class="faq-ul-li-content" tabulation-pane="1">In de brief staat uw activatiecode. Die code vult u in op de website onder de knop activatie-code. Daana u ontvangt u een e-mail met uw QR-code</div>
             </div>
             <div class="faq-ul-li">
-              <div class="faq-ul-li-title" tabulation-tab="2"> Hoe kan ik mij aanmelden als winkelier?<em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
-              <div class="faq-ul-li-content" tabulation-pane="2">Neem contact op met de gemeente</div>
+              <div class="faq-ul-li-title" tabulation-tab="2"> Ik ben mijn QR-code kwijt. Wat moet ik doen?<em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
+              <div class="faq-ul-li-content" tabulation-pane="2">Uw QR-code staat in uw e-mail die u na het activeren heeft ontvangen. Die code kunt u steeds opnieuw gebruiken.</div>
             </div>
             <div class="faq-ul-li">
-              <div class="faq-ul-li-title" tabulation-tab="3"> De winkeliersapp doet het niet.<em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
-              <div class="faq-ul-li-content" tabulation-pane="3">Neem contact op met de gemeente</div>
+              <div class="faq-ul-li-title" tabulation-tab="3"> Hoe kan ik zien hoe hoog mijn budget nog is?<em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
+              <div class="faq-ul-li-content" tabulation-pane="3">Na besteding van uw voucher ontvant uw een-mail over de hoogte van uw budget en kunt u op de website zien hoe hoog uw budget nog is.</div>
             </div>
             <div class="faq-ul-li">
-              <div class="faq-ul-li-title" tabulation-tab="4"> De klant wil iets ruilen/retourneren. Kan dat?<em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
-              <div class="faq-ul-li-content" tabulation-pane="4">U bepaalt zelf als winkelier of er iets geruild of geretourneerd kan worden.</div>
+              <div class="faq-ul-li-title" tabulation-tab="4"> Kan ik iets wat ik gekocht heb ruilen/retour brengen?<em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
+              <div class="faq-ul-li-content" tabulation-pane="4">U kunt niet bij alle winkels spullen ruilen/retour brengen. Vraag de winkelier naar de mogelijkheden. </div>
             </div>
             <div class="faq-ul-li">
-              <div class="faq-ul-li-title" tabulation-tab="5"> Klant wil de voucher omruilen voor contant geld. Kan dat?<em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
-              <div class="faq-ul-li-content" tabulation-pane="5">Nee, dat kan niet. </div>
+              <div class="faq-ul-li-title" tabulation-tab="5"> Moet ik mijn budget in 1x besteden?<em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
+              <div class="faq-ul-li-content" tabulation-pane="5">Nee, u hoeft uw budget niet in 1x te besteden. </div>
             </div>
             <div class="faq-ul-li">
-              <div class="faq-ul-li-title" tabulation-tab="6"> Ik wil als ondernemer aansluiten bij het kindpakket. Hoe doe ik dat?<em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
-              <div class="faq-ul-li-content" tabulation-pane="6">Neem contact op met de gemeente</div>
+              <div class="faq-ul-li-title" tabulation-tab="6"> Ik heb meerdere kinderen. Moet ik aan ieder kind persé €300,00 besteden?<em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
+              <div class="faq-ul-li-content" tabulation-pane="6">Nee, u mag zelf bepalen hoeveel u per kind wilt besteden.</div>
             </div>
             <div class="faq-ul-li">
-              <div class="faq-ul-li-title" tabulation-tab="7"> Klant wil met de voucher spullen kopen voor volwassenen. Wat moet ik doen? <em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
-              <div class="faq-ul-li-content" tabulation-pane="7">U mag de klant daarop aanspreken. De voucher is bedoeld om spullen voor kinderen te kopen. </div>
+              <div class="faq-ul-li-title" tabulation-tab="7"> Hoe lang is de voucher geldig?<em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
+              <div class="faq-ul-li-content" tabulation-pane="7">De voucher is vanaf 1 november 2017 1 jaar geldig.</div>
             </div>
             <div class="faq-ul-li">
-              <div class="faq-ul-li-title" tabulation-tab="8"> De klant heeft onvoldoende budget om spullen te kopen. Wat nu? <em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
-              <div class="faq-ul-li-content" tabulation-pane="8">De klant mag altijd zelf het verschil bij betalen. </div>
+              <div class="faq-ul-li-title" tabulation-tab="8"> Hoe lang is de voucher geldig?<em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
+              <div class="faq-ul-li-content" tabulation-pane="8">Nee, de voucher is strikt persoonlijk. U mag de voucher niet aan iemand geven. Maakt iemand anders wel gebruik van uw voucher dan wordt uw eigen budget lager.</div>
             </div>
             <div class="faq-ul-li">
               <div class="faq-ul-li-title" tabulation-tab="9"> Kan ik de voucher ook omruilen voor contant geld?<em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
               <div class="faq-ul-li-content" tabulation-pane="9">Nee, u krijgt de waarde van de voucher niet in contant geld uitbetaald.</div>
             </div>
             <div class="faq-ul-li">
-              <div class="faq-ul-li-title" tabulation-tab="10"> Wanneer ontvang ik mijn geld?<em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
-              <div class="faq-ul-li-content" tabulation-pane="10">Het bedrag van de gekochte spullen staat de volgende werkdag op uw rekening bijgeschreven. </div>
+              <div class="faq-ul-li-title" tabulation-tab="10"> Kan ik iets kopen bij een andere winkelier die niet op de website staat?<em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
+              <div class="faq-ul-li-content" tabulation-pane="10">Nee, u kunt alleen bij de winkels die op de website staan iets kopen.</div>
             </div>
             <div class="faq-ul-li">
-              <div class="faq-ul-li-title" tabulation-tab="11"> De klant brengt iets retour. Hoe kan ik dat bedrag aan de gemeente terugbetalen?<em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
-              <div class="faq-ul-li-content" tabulation-pane="11">Met een ideal betaling betaalt u het bedrag terug of u maakt het bedrag over aan de gemeente Zuidhorn. </div>
+              <div class="faq-ul-li-title" tabulation-tab="11"> Ik heb nog een kind gekregen. Kom ik in aanmerking voor een hoger budget?<em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
+              <div class="faq-ul-li-content" tabulation-pane="11">Ja, dat kan. Neem dan even contact op met de gemeente.</div>
             </div>
             <div class="faq-ul-li">
-              <div class="faq-ul-li-title" tabulation-tab="12"> Hoe lang is de voucher geldig?<em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
-              <div class="faq-ul-li-content" tabulation-pane="12">De voucher is vanaf 1 november 2017 1 jaar geldig.</div>
+              <div class="faq-ul-li-title" tabulation-tab="12"> Hoe kom ik in aanmerking voor het kindpakket?<em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
+              <div class="faq-ul-li-content" tabulation-pane="12">Als u denkt recht te hebben op het kindpakket, neem dan contact op met de gemeente. De gemeente bekijkt dan of u aan de voorwaarden voldoet. </div>
             </div>
       </div>
     </div>
