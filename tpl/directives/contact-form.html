@@ -3,29 +3,29 @@
   <div class="wrapper">
     <div class="bg-image"></div>
     <div class="contact-inner">
-      <div class="contact-title">Contact Feedback</div>
-      <div class="contact-subtitle">Lees hier de meest gestelde vragen</div>
+      <div class="contact-title">Contactformulier</div>
+      <div class="contact-subtitle">Stuur ons een bericht door middel van het contactformulier.</div>
       <form class="contact-form form" action="#">
         <div class="contact-form-inner">
           <div ng-show="!forms.contact_form.success">
             <div class="row">
               <div class="col col-6">
                 <div class="form-group">
-                  <label class="label">First name</label>
-                  <input class="form-control" type="text" placeholder="First name" ng-model="forms.contact_form.values.first_name"/>
+                  <label class="label">Voornaam</label>
+                  <input class="form-control" type="text" placeholder="Voornaam" ng-model="forms.contact_form.values.first_name"/>
                   <p class="text-danger" ng-repeat="error in forms.contact_form.errors.first_name track by $index" ng-bind="error"></p>
                 </div>
               </div>
               <div class="col col-6">
-                <label class="label">Last name</label>
-                <input class="form-control" type="text" placeholder="Last name" ng-model="forms.contact_form.values.last_name"/>
+                <label class="label">Achternaam</label>
+                <input class="form-control" type="text" placeholder="Achternaam" ng-model="forms.contact_form.values.last_name"/>
                 <p class="text-danger" ng-repeat="error in forms.contact_form.errors.last_name track by $index" ng-bind="error"></p>
               </div>
             </div>
             <div class="row">
               <div class="col col-12">
                 <div class="form-group">
-                  <label class="label">Select Subject</label>
+                  <label class="label">Onderwerp</label>
                   <select class="form-control" ng-options="subject.name for subject in subjects track by subject.key" ng-model="forms.contact_form.values.subject"></select>
                   <p class="text-danger" ng-repeat="error in forms.contact_form.errors.subject track by $index" ng-bind="error"></p>
                 </div>
@@ -34,15 +34,15 @@
             <div class="row">
               <div class="col col-6">
                 <div class="form-group">
-                  <label class="label">Email</label>
-                  <input class="form-control" type="email" placeholder="Email" ng-model="forms.contact_form.values.email"/>
+                  <label class="label">E-mailadres</label>
+                  <input class="form-control" type="email" placeholder="E-mailadres" ng-model="forms.contact_form.values.email"/>
                   <p class="text-danger" ng-repeat="error in forms.contact_form.errors.email track by $index" ng-bind="error"></p>
                 </div>
               </div>
               <div class="col col-6">
                 <div class="form-group">
-                  <label class="label">Telephone</label>
-                  <input class="form-control" type="phone" placeholder="Telephone" ng-model="forms.contact_form.values.phone"/>
+                  <label class="label">Telefoonnummer</label>
+                  <input class="form-control" type="phone" placeholder="Telefoonnummer" ng-model="forms.contact_form.values.phone"/>
                   <p class="text-danger" ng-repeat="error in forms.contact_form.errors.phone track by $index" ng-bind="error"></p>
                 </div>
               </div>
@@ -50,17 +50,17 @@
             <div class="row">
               <div class="col col-12">
                 <div class="form-group">
-                  <label class="label">Message</label>
+                  <label class="label">Bericht</label>
                   <textarea class="form-control" name="message" placeholder="Message" cols="30" rows="3" ng-model="forms.contact_form.values.message"></textarea>
                   <p class="text-danger" ng-repeat="error in forms.contact_form.errors.message track by $index" ng-bind="error"></p>
                 </div>
               </div>
-            </div><a class="button button-success submit-button" type="submit" ng-click="submitContactForm($event, forms.contact_form)" href="#">Send message</a>
+            </div><a class="button button-success submit-button" type="submit" ng-click="submitContactForm($event, forms.contact_form)" href="#">Verstuur Bericht</a>
           </div>
           <div ng-show="forms.contact_form.success">
             <div class="row">
               <div class="col col-12">
-                <h2 class="text-primary text-center">Success!</h2>
+                <h2 class="text-primary text-center">Succes!</h2>
               </div>
             </div>
           </div>

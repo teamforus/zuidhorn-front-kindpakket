@@ -17,7 +17,7 @@
               <tr ng-repeat="transaction in $ctrl.transactions">
                 <td ng-bind="transaction.created_at | pretty_date"></td>
                 <td><strong>€ </strong><strong>{{ transaction.amount | number_format:2 }}</strong></td>
-                <td ng-bind="transaction.status | uc_first"></td>
+                <td ng-bind="{success: 'Succes', refund: 'Retour'}[transaction.status] || transaction.status"></td>
               </tr>
             </tbody>
           </table>
@@ -25,7 +25,7 @@
       </div>
     </div>
     <div class="section section-panel" ng-show="$ctrl.transactions.length == 0">
-      <h4 class="text-center">No transactions</h4>
+      <h4 class="text-center">Geen transacties</h4>
     </div>
   </div>
 </div>

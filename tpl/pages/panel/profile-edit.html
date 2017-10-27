@@ -1,15 +1,16 @@
 
 <div class="section section-container">
   <div class="wrapper"> 
-    <div class="section section-title">Edit profile</div>
+    <div class="section section-title">Bewerk Profiel</div>
     <div class="section section-panel section-panel-profile">
       <div class="section-panel-inner">
         <div class="profile-details">
           <div class="profile-photo"><img ng-if="$root.user.shop_keeper.preview != false" ng-src="{{ $root.user.shop_keeper.preview }}" alt=""/><img ng-show="$root.user.shop_keeper.preview == false" src="./assets/img/square.png"/>
             <div class="profile-photo-placeholder" ng-show="$root.user.shop_keeper.preview == false"><em class="mdi mdi-image"></em>NO PHOTO</div>
           </div>
-          <div class="logo-title">Logo</div><a class="button button-success" href="#" ng-click="$ctrl.selectPhoto($event)"><em class="mdi mdi-attachment"></em>Change photo</a>
-          <div class="logo-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit</div>
+          <div class="logo-title">Logo</div><a class="button button-success" href="#" ng-click="$ctrl.selectPhoto($event)"><em class="mdi mdi-attachment"></em>Verander afbeelding</a>
+          <!--.logo-description| Lorem ipsum dolor sit amet, consectetur adipiscing elit
+          -->
         </div>
         <form class="form form-sm" ng-submit="$ctrl.submitForm($event, $ctrl.form.profile)">
           <div class="row">
@@ -18,26 +19,33 @@
             </div>
           </div>
           <div class="row">
-            <div class="col col-12">
+            <div class="col col-6">
               <div class="form-group">
-                <label class="label">Company Name</label>
-                <input class="form-control" type="text" placeholder="Company Name" ng-model="$ctrl.form.profile.values.name"/>
+                <label class="label">Bedrijfsnaam</label>
+                <input class="form-control" type="text" placeholder="Bedrijfsnaam" ng-model="$ctrl.form.profile.values.name"/>
                 <p class="text-danger" ng-repeat="error in $ctrl.form.profile.errors.name track by $index" ng-bind="error"></p>
+              </div>
+            </div>
+            <div class="col col-6">
+              <div class="form-group">
+                <label class="label">IBAN Name</label>
+                <input class="form-control" type="text" placeholder="IBAN Name" ng-model="$ctrl.form.profile.values.iban_name"/>
+                <p class="text-danger" ng-repeat="error in $ctrl.form.profile.errors.iban_name track by $index" ng-bind="error"></p>
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col col-6">
               <div class="form-group">
-                <label class="label">Email</label>
-                <input class="form-control" type="email" placeholder="Email" ng-model="$ctrl.form.profile.values.email"/>
+                <label class="label">E-mail</label>
+                <input class="form-control" type="email" placeholder="E-mail" ng-model="$ctrl.form.profile.values.email"/>
                 <p class="text-danger" ng-repeat="error in $ctrl.form.profile.errors.email track by $index" ng-bind="error"></p>
               </div>
             </div>
             <div class="col col-6">
               <div class="form-group">
-                <label class="label">Telephone</label>
-                <input class="form-control" type="text" placeholder="Telephone" ng-model="$ctrl.form.profile.values.phone"/>
+                <label class="label">Telefoonnummer</label>
+                <input class="form-control" type="text" placeholder="Telefoonnummer" ng-model="$ctrl.form.profile.values.phone"/>
                 <p class="text-danger" ng-repeat="error in $ctrl.form.profile.errors.phone track by $index" ng-bind="error"></p>
               </div>
             </div>
@@ -45,7 +53,7 @@
           <div class="row">
             <div class="col col-12">
               <div class="form-group">
-                <label class="label">Select Category</label>
+                <label class="label">Selecteer categorie</label>
                 <select class="form-control" ng-options="category.name for category in ($ctrl.all_categories | not_in:$ctrl.form.profile.values.categories) track by category.id" ng-model="void.category" ng-change="$ctrl.selectCategory(void)"></select>
               </div>
             </div>
@@ -57,35 +65,28 @@
           </div>
           <div class="row">
             <div class="col col-12">
-              <div class="form-heading">Financial details </div>
+              <div class="form-heading">Financiële gegevens</div>
             </div>
           </div>
           <div class="row">
             <div class="col col-12">
               <div class="form-group">
-                <label class="label">Kvk Number</label>
-                <input class="form-control" type="text" placeholder="Kvk Number" ng-model="$ctrl.form.profile.values.kvk_number"/>
+                <label class="label">KvK-nummer</label>
+                <input class="form-control" type="text" placeholder="KvK-nummer" ng-model="$ctrl.form.profile.values.kvk_number"/>
                 <p class="text-danger" ng-repeat="error in $ctrl.form.profile.errors.kvk_number track by $index" ng-bind="error"></p>
               </div>
             </div>
             <div class="col col-12">
               <div class="form-group">
-                <label class="label">BTW</label>
-                <input class="form-control" type="text" placeholder="BTW" ng-model="$ctrl.form.profile.values.btw_number"/>
+                <label class="label">BTW-nummer</label>
+                <input class="form-control" type="text" placeholder="BTW-nummer" ng-model="$ctrl.form.profile.values.btw_number"/>
                 <p class="text-danger" ng-repeat="error in $ctrl.form.profile.errors.btw_number track by $index" ng-bind="error"></p>
-              </div>
-            </div>
-            <div class="col col-12">
-              <div class="form-group">
-                <label class="label">IBAN</label>
-                <input class="form-control" type="text" placeholder="IBAN" ng-model="$ctrl.form.profile.values.iban"/>
-                <p class="text-danger" ng-repeat="error in $ctrl.form.profile.errors.iban track by $index" ng-bind="error"></p>
               </div>
             </div>
           </div>
           <button class="hidden" type="submit"></button>
         </form>
-        <div class="buttons"> <a class="button button-success" href="#" ng-click="$ctrl.submitForm($event, $ctrl.form.profile)">Submit</a><a class="button button-muted" ui-sref="panel-offices">Cancel</a></div>
+        <div class="buttons"> <a class="button button-success" href="#" ng-click="$ctrl.submitForm($event, $ctrl.form.profile)">Verwerk</a><a class="button button-muted" ui-sref="panel-offices">Annuleer</a></div>
       </div>
     </div>
   </div>
