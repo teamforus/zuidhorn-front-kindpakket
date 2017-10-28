@@ -418,10 +418,19 @@ kindpakketApp.directive('contactForm', [
             link: function($scope, iElm, iAttrs, controller) {
                 $scope.subjects = [{
                     key: 'other',
-                    name: 'Other'
+                    name: 'Anders'
+                }, {
+                    key: 'budget',
+                    name: 'Budget'
+                }, {
+                    key: 'recht_op_kindpakket',
+                    name: 'Recht op Kindpakket'
                 }, {
                     key: 'tehnical_issuse',
-                    name: 'Tehnical issuse'
+                    name: 'Technisch'
+                }, {
+                    key: 'logging_in',
+                    name: 'Logging in'
                 }];
 
                 $scope.forms = {};
@@ -642,7 +651,7 @@ kindpakketApp.service('AuthService', [
             apiRequest = ApiRequest;
 
             this.signIn = function(values) {
-                return ApiRequest.post('/../../api/oauth/token', {
+                return ApiRequest.post('/../oauth/token', {
                     'grant_type': 'password',
                     'client_id': 2,
                     'client_secret': 'DKbwNT3Afz8bovp0BXvJX5jWudIRRW9VZPbzieVJ',

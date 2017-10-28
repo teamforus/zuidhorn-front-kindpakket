@@ -4,30 +4,30 @@
     <div class="section-header-inner" ng-show="$root.credentials"><a class="logo" ui-sref="landing"><img src="./assets/img/logo.png"/></a>
       <div class="section-header-actions">
         <div class="button-group">
-          <div class="button button-white disabled"><span>Budget &nbsp; </span><strong>€</strong><strong ng-bind="$root.targetVoucher.funds"></strong></div><a class="button button-white" ui-sref="account"><span class="mdi mdi-account"></span>Mijn Account</a>
+          <div class="button button-white disabled"><span>Huidige Budget &nbsp; </span><strong>€</strong><strong ng-bind="$root.targetVoucher.funds"></strong></div><a class="button button-white" ui-sref="account"><span class="mdi mdi-account"></span>Mijn Account</a>
         </div><a class="button button-primary" href="#" ng-click="$root.auth.signOut($event)"><em class="mdi mdi-logout"></em>Logout</a>
       </div>
     </div>
     <div class="section-header-inner" ng-show="!$root.credentials"><a class="logo" href="./"><img src="./assets/img/logo.png" alt=""/></a>
-      <div class="section-header-actions"><a class="button button-success" href="#" ng-click="$root.auth.activateVoucher($event)"><em class="mdi mdi-ticket-confirmation"></em>Activate voucher</a><a class="button button-white" href="#" ng-click="$root.auth.signIn($event)"><em class="mdi mdi-account"></em>Login</a></div>
+      <div class="section-header-actions"><a class="button button-success" href="#" ng-click="$root.auth.activateVoucher($event)"><em class="mdi mdi-ticket-confirmation"></em>Activatiecode</a><a class="button button-white" href="#" ng-click="$root.auth.signIn($event)"><em class="mdi mdi-account"></em>Login</a></div>
     </div>
     <div class="section-header-text">
       <div class="section-header-text-title"><strong>Zuidhorn. </strong>Kindpakket</div>
-      <div class="section-header-text-description">Welkom om de website van het kindpakket Zuidhorn. Op deze website vindt u een overzicht van de deelnemende winkeliers. Begin gelijk door rechtsboven in te loggen of uw voucher te activeren.</div><a class="button button-success" href="#how-it-works" slow-scroll="slow-scroll"> <span>Leer meer over hoe het</span><span>systeem werkt</span></a>
+      <div class="section-header-text-description">Welkom op de website van het kindpakket Zuidhorn. Het kindpakket is een jaarlijks ondersteunende regeling voor kinderen in de gemeente Zuidhorn.</div><a class="button button-success" href="#how-it-works" slow-scroll="slow-scroll"> <span>Lees meer over hoe het </span><span>systeem werkt</span></a>
     </div>
   </div>
 </header>
 <div class="section section-offices">
   <div class="section-offices-list">
     <div class="section-offices-list-header">
-      <h4>We found for you {{ $ctrl.locations.length }} shop(s).</h4><small>Please select one to see the details</small>
+      <h4>We hebben {{ $ctrl.locations.length }} winkel(s) gevonden. </h4><small>Selecteer een winkel om de locatie en details te tonen.</small>
     </div>
     <div class="section-offices-list-inner nano">
       <div class="nano-content"> 
         <div class="section section-panel" ng-repeat="location in $ctrl.locations track by $index" ng-click="$ctrl.selectLocation($event, location)" ng-class="{active: location.selected}">
           <div class="office-li"><img class="office-li-thumb" ng-src="{{location.preview || 'assets/img/no-image.jpg'}}" alt=""/>
             <div class="office-li-name" ng-bind="location.shopkeeper.name"></div>
-            <div class="office-li-description"><strong>Adress: </strong><span ng-bind="location.address || 'Geen data'"></span><br/><strong>Phone: </strong><span ng-bind="location.phone || 'Geen data'"></span><br/><br/><strong class="text-primary">Opening times:</strong><br/>
+            <div class="office-li-description"><strong>Adres: </strong><span ng-bind="location.address || 'Geen data'"></span><br/><strong>Telefoonnummer: </strong><span ng-bind="location.phone || 'Geen data'"></span><br/><br/><strong class="text-primary">Openingstijden:</strong><br/>
               <div><span class="br" ng-repeat="schedule in location.schedules track by $index"><strong>{{ ['MO', 'TU', 'WE', 'TH', 'FR'][$index] }}: </strong>{{ schedule.start_time }}-{{ schedule.end_time }}{{ $index < location.schedules.length - 1 ? ',' : '' }} </span></div>
             </div>
           </div>
@@ -39,7 +39,7 @@
 </div>
 <div class="section section-categories">
   <div class="wrapper">
-    <h1 class="section-header">Door te klikken op de blokken zoekt u de winkels die meedoen aan het systee</h1>
+    <h1 class="section-header">Kies de categorie om een overzicht te krijgen van de winkels die uw kindpakket voucher accepteren</h1>
     <div class="categories-list">
       <div class="categories-list-inner">
         <div class="categories-item" ng-repeat="category in $ctrl.categories track by $index">
@@ -49,7 +49,7 @@
           </div>
         </div>
       </div>
-      <div class="categories-list-actions"><a class="button button-primary" href="#" ng-click="$ctrl.selectAll($event)"><em class="mdi mdi-chevron-double-right"></em>Selecteer alles</a><a class="button button-success" href="#" ng-click="$ctrl.updateOfficesCategory($event)"><em class="mdi mdi-magnify"></em>Filter</a></div>
+      <div class="categories-list-actions"><a class="button button-primary" href="#" ng-click="$ctrl.selectAll($event)"><em class="mdi mdi-chevron-double-right"></em>Selecteer Alles</a><a class="button button-success" href="#" ng-click="$ctrl.updateOfficesCategory($event)"><em class="mdi mdi-magnify"></em>Filter</a></div>
     </div>
   </div>
 </div>
@@ -58,56 +58,70 @@
   <div class="how-it-works-inner">
     <h1 class="how-it-works-title" id="how-it-works">Hoe het systeem werkt</h1>
     <div class="how-it-works-list">
-      <div class="how-it-works-item"> <em class="how-it-works-item-number">1</em>U heeft een brief ontvangen van de gemeente</div>
-      <div class="how-it-works-item"> <em class="how-it-works-item-number">2</em>In deze brief staat een activatie code</div>
-      <div class="how-it-works-item"> <em class="how-it-works-item-number">3</em>U activeert uw voucher op deze webiste door te drukken op de knop activeer voucher</div>
-      <div class="how-it-works-item"> <em class="how-it-works-item-number">4</em>Hierna zal u uw budget te zien krijgen</div>
-      <div class="how-it-works-item"> <em class="how-it-works-item-number">5</em>U print uw voucher code uit of mailt deze naar u zelf toe</div>
-      <div class="how-it-works-item"> <em class="how-it-works-item-number">6</em>U bekijkt het aanbod van de deelnemende winkels</div>
-      <div class="how-it-works-item"> <em class="how-it-works-item-number">7</em>De winkelier scant uw voucher</div>
-      <div class="how-it-works-item"> <em class="how-it-works-item-number">8</em>De kosten worden afgeschreben van uw budget</div>
+      <div class="how-it-works-item"> <em class="how-it-works-item-number">1</em>U heeft een brief van de gemeente ontvangen</div>
+      <div class="how-it-works-item"> <em class="how-it-works-item-number">2</em>In deze brief staat uw activatiecode</div>
+      <div class="how-it-works-item"> <em class="how-it-works-item-number">3</em>Via de acticatiecode knop op website wordt uw voucher geactiveerd.</div>
+      <div class="how-it-works-item"> <em class="how-it-works-item-number">4</em>U ziet vervolgens uw budget </div>
+      <div class="how-it-works-item"> <em class="how-it-works-item-number">5</em>U print uw voucher uit of u mailt de voucher naar uzelf toe</div>
+      <div class="how-it-works-item"> <em class="how-it-works-item-number">6</em>U kijkt vervolgens naar welke winkel(s) u wilt gaan</div>
+      <div class="how-it-works-item"> <em class="how-it-works-item-number">7</em>U zoekt één of meerdere prodducten uit en de winkelier scant uw voucher</div>
+      <div class="how-it-works-item"> <em class="how-it-works-item-number">8</em>De kosten worden direct in mindering gebracht op uw budget</div>
     </div>
   </div>
 </div>
 <div class="section section-faq">
-  <div class="faq-inner" tabulation="tabulation">
-    <div class="faq-tabs">
-      <div class="faq-tabs-inner">
-        <h4 class="faq-tabs-title">Veel gestelde vragen</h4><a class="faq-tab" href="#" tabulation-tab="1">Lorem ipsum dolor sit amet</a><a class="faq-tab" href="#" tabulation-tab="2">Excepteur sint occaecat cupidatat non proident, sunt in culpa</a><a class="faq-tab" href="#" tabulation-tab="3">Numquam eius modi tempora incidunt</a><a class="faq-tab" href="#" tabulation-tab="4">Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit</a>
-      </div>
-    </div>
-    <div class="faq-panes">
-      <div class="faq-panes-inner">
-        <div class="faq-pane" tabulation-pane="1">
-          <h4>#1 nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit</h4>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-          <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo</p>
-          <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
-        </div>
-        <div class="faq-pane" tabulation-pane="2">
-          <h4>#2 nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit</h4>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-          <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo</p>
-          <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
-        </div>
-        <div class="faq-pane" tabulation-pane="3">
-          <h4>#3 nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit</h4>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-          <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo</p>
-          <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
-        </div>
-        <div class="faq-pane" tabulation-pane="4">
-          <h4>#4 nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit</h4>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-          <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo</p>
-          <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
-        </div>
-        <div class="faq-pane" tabulation-pane="5">
-          <h4>#5 nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit</h4>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-          <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo</p>
-          <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
-        </div>
+  <div class="wrapper">
+    <div class="faq">
+      <div class="faq-heading">Veel gestelde vragen</div>
+      <div class="faq-ul" tabulation="tabulation">
+            <div class="faq-ul-li">
+              <div class="faq-ul-li-title" tabulation-tab="1"> Ik weet niet hoe ik moet inloggen; hoe de activatiecode werkt.<em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
+              <div class="faq-ul-li-content" tabulation-pane="1">In de brief staat uw activatiecode. Die code vult u in op de website onder de knop activatie-code. Daana u ontvangt u een e-mail met uw QR-code</div>
+            </div>
+            <div class="faq-ul-li">
+              <div class="faq-ul-li-title" tabulation-tab="2"> Ik ben mijn QR-code kwijt. Wat moet ik doen?<em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
+              <div class="faq-ul-li-content" tabulation-pane="2">Uw QR-code staat in uw e-mail die u na het activeren heeft ontvangen. Die code kunt u steeds opnieuw gebruiken.</div>
+            </div>
+            <div class="faq-ul-li">
+              <div class="faq-ul-li-title" tabulation-tab="3"> Hoe kan ik zien hoe hoog mijn budget nog is?<em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
+              <div class="faq-ul-li-content" tabulation-pane="3">Na besteding van uw voucher ontvant uw een-mail over de hoogte van uw budget en kunt u op de website zien hoe hoog uw budget nog is.</div>
+            </div>
+            <div class="faq-ul-li">
+              <div class="faq-ul-li-title" tabulation-tab="4"> Kan ik iets wat ik gekocht heb ruilen/retour brengen?<em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
+              <div class="faq-ul-li-content" tabulation-pane="4">U kunt niet bij alle winkels spullen ruilen/retour brengen. Vraag de winkelier naar de mogelijkheden. </div>
+            </div>
+            <div class="faq-ul-li">
+              <div class="faq-ul-li-title" tabulation-tab="5"> Moet ik mijn budget in 1x besteden?<em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
+              <div class="faq-ul-li-content" tabulation-pane="5">Nee, u hoeft uw budget niet in 1x te besteden. </div>
+            </div>
+            <div class="faq-ul-li">
+              <div class="faq-ul-li-title" tabulation-tab="6"> Ik heb meerdere kinderen. Moet ik aan ieder kind persé €300,00 besteden?<em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
+              <div class="faq-ul-li-content" tabulation-pane="6">Nee, u mag zelf bepalen hoeveel u per kind wilt besteden.</div>
+            </div>
+            <div class="faq-ul-li">
+              <div class="faq-ul-li-title" tabulation-tab="7"> Hoe lang is de voucher geldig?<em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
+              <div class="faq-ul-li-content" tabulation-pane="7">De voucher is vanaf 1 november 2017 1 jaar geldig.</div>
+            </div>
+            <div class="faq-ul-li">
+              <div class="faq-ul-li-title" tabulation-tab="8"> Hoe lang is de voucher geldig?<em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
+              <div class="faq-ul-li-content" tabulation-pane="8">Nee, de voucher is strikt persoonlijk. U mag de voucher niet aan iemand geven. Maakt iemand anders wel gebruik van uw voucher dan wordt uw eigen budget lager.</div>
+            </div>
+            <div class="faq-ul-li">
+              <div class="faq-ul-li-title" tabulation-tab="9"> Kan ik de voucher ook omruilen voor contant geld?<em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
+              <div class="faq-ul-li-content" tabulation-pane="9">Nee, u krijgt de waarde van de voucher niet in contant geld uitbetaald.</div>
+            </div>
+            <div class="faq-ul-li">
+              <div class="faq-ul-li-title" tabulation-tab="10"> Kan ik iets kopen bij een andere winkelier die niet op de website staat?<em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
+              <div class="faq-ul-li-content" tabulation-pane="10">Nee, u kunt alleen bij de winkels die op de website staan iets kopen.</div>
+            </div>
+            <div class="faq-ul-li">
+              <div class="faq-ul-li-title" tabulation-tab="11"> Ik heb nog een kind gekregen. Kom ik in aanmerking voor een hoger budget?<em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
+              <div class="faq-ul-li-content" tabulation-pane="11">Ja, dat kan. Neem dan even contact op met de gemeente.</div>
+            </div>
+            <div class="faq-ul-li">
+              <div class="faq-ul-li-title" tabulation-tab="12"> Hoe kom ik in aanmerking voor het kindpakket?<em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
+              <div class="faq-ul-li-content" tabulation-pane="12">Als u denkt recht te hebben op het kindpakket, neem dan contact op met de gemeente. De gemeente bekijkt dan of u aan de voorwaarden voldoet. </div>
+            </div>
       </div>
     </div>
   </div>
