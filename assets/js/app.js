@@ -80,6 +80,41 @@ kindpakketApp.config(['$stateProvider', '$locationProvider', function($stateProv
                 title: "Account"
             }
         });
+
+    $stateProvider
+        .state({
+            url: '/activate-voucher/{activation_token}',
+            name: 'activate-voucher',
+            controller: ['$scope', '$state', '$rootScope', 'AuthService', 'CredentialsService', function($scope, $state, $rootScope, AuthService, CredentialsService) {
+                console.log($state.params.activation_token);
+                AuthService.activateVoucherToken($state.params.activation_token)
+                    .then(function(response) {
+                        CredentialsService.set(response.data);
+                        $state.go('landing');
+                        $rootScope.credentials = CredentialsService.get();
+                    }, function(response) {
+                        alert(response.data.message);
+                        $state.go('landing');
+                    });
+            }]
+        });
+
+    $stateProvider
+        .state({
+            url: '/sign-in/{token}',
+            name: 'sign-in',
+            controller: ['$scope', '$state', '$rootScope', 'AuthService', 'CredentialsService', function($scope, $state, $rootScope, AuthService, CredentialsService) {
+                AuthService.signInByToken($state.params.token)
+                    .then(function(response) {
+                        CredentialsService.set(response.data);
+                        $rootScope.credentials = CredentialsService.get();
+                        $state.go('landing');
+                    }, function(response) {
+                        alert(JSON.stringify(response.data, null, '    '));
+                        $state.go('landing');
+                    });
+            }]
+        });
 }]);
 
 if (!env_data.html5Mode.enable)
@@ -139,22 +174,14 @@ kindpakketApp.controller('BaseController', [
 
             form.submit = true;
 
-            AuthService.signIn(form.values).then(function(response) {
-                CredentialsService.set(response.data);
-                $rootScope.credentials = CredentialsService.get();
-                $rootScope.targetVoucher = AuthService.getVoucher();
-                $rootScope.auth.closeModals();
-                form.submit = false;
-
-                if ($rootScope.credentials) {
-                    AuthService.getVoucher().then(function(response) {
-                        $rootScope.targetVoucher = response.data;
-                    });
-                }
-            }, function(response) {
-                form.errors.email = ["Wrong E-mail or password!"];
-                form.submit = false;
-            });
+            AuthService.sendSignInToken(form.values.email)
+                .then(function(response) {
+                    $rootScope.auth.closeModals();
+                    form.submit = false;
+                }, function(response) {
+                    form.errors = response.data;
+                    form.submit = false;
+                });
         };
 
         $rootScope.auth.activateVoucher = function(e) {
@@ -601,6 +628,7 @@ kindpakketApp.provider('ApiRequest', function() {
                     var credentails = CredentialsService.get();
 
                     return {
+                        'Locale': 'nl',
                         'Accept': 'application/json',
                         'Authorization': 'Bearer ' + (credentails ? credentails.access_token : ''),
                         'Device-Id': DeviceIdService.getDeviceId().id,
@@ -657,20 +685,25 @@ kindpakketApp.service('AuthService', [
         return new(function() {
             apiRequest = ApiRequest;
 
-            this.signIn = function(values) {
-                return ApiRequest.post('/../oauth/token', {
-                    'grant_type': 'password',
-                    'client_id': 2,
-                    'client_secret': 'DKbwNT3Afz8bovp0BXvJX5jWudIRRW9VZPbzieVJ',
-                    'username': values.email || '',
-                    'password': values.password || '',
-                    'scope': '*',
+            this.sendSignInToken = function(email) {
+                return ApiRequest.post('/user/send-token', {
+                    email: email
+                });
+            };
+
+            this.signInByToken = function(token) {
+                return ApiRequest.post('/user/sign-in', {
+                    token: token
                 });
             };
 
             this.activateVoucher = function(voucher, values) {
-                return ApiRequest.post('/voucher/' + voucher + '/activate', values || {
-                    here: 'here'
+                return ApiRequest.post('/voucher/' + voucher + '/activate', values);
+            };
+
+            this.activateVoucherToken = function(activation_token) {
+                return ApiRequest.post('/voucher/activate-token', {
+                    activation_token: activation_token
                 });
             };
 
