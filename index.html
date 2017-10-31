@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/kindpakket/assets/css/style.min.css">
     <base href="/kindpakket/">
   </head>
-  <body ng-cloak>
+  <body ng-cloak ng-class="{'popup-open' : $root.modals.count() &gt; 0}">
     <div ui-view></div>
     <div class="popups">
       <div class="popup popup-auth">
@@ -41,42 +41,40 @@
       <div class="popup popup-voucher">
         <div class="popup-backdrop" ng-click="auth.closeModals($event)"></div>
         <div class="popup-inner"><a class="popup-close mdi mdi-close" href="#" ng-click="auth.closeModals($event)"></a>
-          <div class="popup-heading">Activatiecode</div>
+          <div class="popup-heading">Activeer uw account</div>
           <form class="form" ng-hide="forms.voucher.submit" ng-submit="auth.activateVoucherSubmit($event, forms.voucher)">
             <div class="row">
               <div class="col col-12">
                 <div class="form-group">
-                  <label class="label">Voucher</label>
-                  <input class="form-control" type="text" placeholder="Voucher" ng-model="forms.voucher.values.code">
+                  <label class="label">Activatiecode (zoals in de brief van de gemeente)</label>
+                  <input class="form-control" type="text" placeholder="Activatiecode" ng-model="forms.voucher.values.code">
                   <p class="text-danger" ng-repeat="error in forms.voucher.errors.code track by $index" ng-bind="error"></p>
                 </div>
               </div>
               <div class="col col-12">
                 <div class="form-group">
-                  <label class="label">Email</label>
-                  <input class="form-control" type="email" placeholder="Email" ng-model="forms.voucher.values.email">
+                  <label class="label">E-mailadres</label>
+                  <input class="form-control" type="email" placeholder="E-mailadres" ng-model="forms.voucher.values.email">
                   <p class="text-danger" ng-repeat="error in forms.voucher.errors.email track by $index" ng-bind="error"></p>
+                </div>
+              </div>
+              <div class="col col-12">
+                <div class="form-group">
+                  <label class="label">E-mailadres</label>
+                  <input class="form-control" type="email" placeholder="E-mailadres" ng-model="forms.voucher.values.email_confirmation">
+                  <p class="text-danger" ng-repeat="error in forms.voucher.errors.email_confirmation track by $index" ng-bind="error"></p>
                 </div>
               </div>
             </div>
             <div class="row"><br>
               <div class="col col-12">
                 <div class="form-group text-center">
-                  <button class="button button-success" type="submit">Submit</button>
+                  <button class="button button-success" type="submit">Activeer</button>
                 </div>
               </div>
             </div>
           </form>
           <div class="voucher-activation-loading" ng-show="forms.voucher.submit"><img src="./assets/img/progress.gif" alt=""></div>
-        </div>
-      </div>
-      <div class="popup popup-voucher-success">
-        <div class="popup-backdrop" ng-click="auth.closeModals($event)"></div>
-        <div class="popup-inner"><a class="popup-close mdi mdi-close" href="#" ng-click="auth.closeModals($event)"></a>
-          <div class="modal-success">
-            <div class="modal-success-title"><em class="mdi mdi-checkbox-multiple-marked-circle-outline"> </em>Voucher Activated</div>
-            <div class="modal-success-desc">We have sent the password to your email</div>
-          </div>
         </div>
       </div>
       <div class="popup popup-qr-code-email-success">
@@ -87,10 +85,11 @@
           </div>
         </div>
       </div>
+      <div ng-repeat="modal in $root.modals.modals() track by $index" popup-modal modal="modal"></div>
     </div>
     <footer class="section section-footer">
       <div class="footer-nav wrapper">
-        <div class="footer-nav-col"><a class="footer-nav-logo" href="#"><img src="/assets/img/logo-dark.png" alt=""></a>
+        <div class="footer-nav-col"><a class="footer-nav-logo" href="#"><img src="/kindpakket/assets/img/logo-dark.png" alt=""></a>
           <div class="footer-nav-ul">
             <div class="footer-nav-ul-li"><span class="text-primary-dark">E-mailadres:</span>kindpakket@zuidhorn.nl</div>
             <div class="footer-nav-ul-li"><span class="text-primary-dark">Telefoonnummer:</span>(0594) 508888</div>
@@ -98,7 +97,7 @@
           </div>
         </div>
         <div class="footer-nav-col">
-          <div class="footer-nav-heading">Openingstijden:</div>
+          <div class="footer-nav-heading">Openingstijden Gemeente:</div>
           <div class="footer-nav-ul">
             <div class="footer-nav-ul-li"><span class="footer-nav-ul-li-pad text-primary-dark">Maandag: </span>8.30-12.30, 13.30-16.30, 18.00-19.30</div>
             <div class="footer-nav-ul-li"><span class="footer-nav-ul-li-pad text-primary-dark">Dinsdag: </span>8.30-12.30</div>
@@ -108,15 +107,15 @@
           </div>
         </div>
         <div class="footer-nav-col">
-          <div class="footer-nav-ul"><a class="footer-nav-ul-button button button-primary button-wide" href="#"><em class="em mdi mdi-information"></em>Bent u een winkelier in Zuidhorn en wilt u meer informatie?</a><a class="footer-nav-ul-button button button-success-dark button-wide" href="#"><em class="em mdi mdi-information"></em>Bent u een inwoner van Zuidhorn en wilt u meer informatie?</a>
-            <div class="footer-nav-ul-li footer-nav-ul-li-mark"><a href="#"> <span class="text-primary">Algemene Voorwaarden</span></a></div>
-            <div class="footer-nav-ul-li footer-nav-ul-li-mark"><a class="text-primary-dark" href="#"> <span class="text-primary">Privacy Statement</span></a></div>
+          <div class="footer-nav-ul"><a class="footer-nav-ul-button button button-primary button-wide" href="https://test.winkelier.forus.io/" target="_blank"><em class="em mdi mdi-information"></em>Bent u een winkelier in Zuidhorn en wilt u meer informatie?</a><a class="footer-nav-ul-button button button-success-dark button-wide" href="https://test.zuidhorn.forus.io/kindpakket/" target="_blank"><em class="em mdi mdi-information"></em>Bent u een inwoner van Zuidhorn en wilt u meer informatie?</a>
+            <div class="footer-nav-ul-li footer-nav-ul-li-mark"><a href="/kindpakket/assets/documents/algemene-voorwaarden.pdf" download="Algemene Voorwaarden Kindpakket website.pdf" target="_blank"> <span class="text-primary">Algemene Voorwaarden</span></a></div>
+            <div class="footer-nav-ul-li footer-nav-ul-li-mark"><a href="/kindpakket/assets/documents/privacy-policy.pdf" download="Privacy Policy voor websites Kindpakket.pdf" target="_blank"> <span class="text-primary">Privacy Statement</span></a></div>
           </div>
         </div>
       </div>
       <div class="footer-copyrights">Copyright © 2017 Zuidhorn. Alle rechten voorbehouden. <span>| </span><a href="#">Algemene voorwaarden</a></div>
     </footer>
-    <script>var env_data = {"html5Mode":{"enable":true,"basePath":"/kindpakket/"},"apiUrl":"https://test.api.zuidhorn.forus.io/client","credentials_key":"zuidhorn-front-kindpakket-credentials"};
+    <script>var env_data = {"html5Mode":{"enable":true,"basePath":"/kindpakket/"},"apiUrl":"https://test.api.zuidhorn.forus.io/client","credentials_key":"zuidhorn-front-kindpakket-credentials","winkelierUrl":"https://test.winkelier.forus.io/","kindpakketUrl":"https://test.zuidhorn.forus.io/kindpakket/"};
       
     </script>
     <script src="/kindpakket/assets/dist/jquery/jquery.min.js"></script>
