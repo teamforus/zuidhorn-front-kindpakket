@@ -56,7 +56,7 @@ kindpakketApp.config(['ApiRequestProvider', function(ApiRequestProvider) {
     ApiRequestProvider.setHost(env_data.apiUrl);
 }]);
 
-kindpakketApp.config(['$stateProvider', '$locationProvider', function($stateProvider, $locationProvider) {
+kindpakketApp.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $locationProvider) {
     if (env_data.html5Mode.enable)
         $locationProvider.html5Mode(true);
 
@@ -93,7 +93,11 @@ kindpakketApp.config(['$stateProvider', '$locationProvider', function($stateProv
                         $state.go('landing');
                         $rootScope.credentials = CredentialsService.get();
                     }, function(response) {
-                        alert(response.data.message);
+                        $rootScope.modals.push({
+                            icon: ['mdi-close'],
+                            descLg: response.data.message || Object.values(response.data)[0][0] || '',
+                        });
+
                         $state.go('landing');
                     });
             }]
@@ -110,11 +114,33 @@ kindpakketApp.config(['$stateProvider', '$locationProvider', function($stateProv
                         $rootScope.credentials = CredentialsService.get();
                         $state.go('landing');
                     }, function(response) {
-                        alert(JSON.stringify(response.data, null, '    '));
+                        $rootScope.modals.push({
+                            icon: ['mdi-close'],
+                            descLg: response.data.message || Object.values(response.data)[0][0] || '',
+                        });
+
                         $state.go('landing');
                     });
             }]
         });
+
+    $stateProvider
+        .state('404', {
+            controller: ['$scope', '$state', '$rootScope', function($scope, $state, $rootScope) {
+                $rootScope.modals.push({
+                    icon: ['mdi-glasses'],
+                    title: 'Page not found.',
+                });
+                
+                $state.go('landing');
+            }]
+        });
+
+    $urlRouterProvider.otherwise(function($injector, $location) {
+        var state = $injector.get('$state');
+        state.go('404');
+        return $location.path();
+    });
 }]);
 
 if (!env_data.html5Mode.enable)
@@ -178,6 +204,16 @@ kindpakketApp.controller('BaseController', [
                 .then(function(response) {
                     $rootScope.auth.closeModals();
                     form.submit = false;
+
+                    $rootScope.modals.push({
+                        icon: ['mdi-checkbox-multiple-marked-circle-outline'],
+                        descLg: 'Er is een E-mail verstuurd naar ' +
+                            $scope.forms.voucher.values.email +
+                            '. Druk op de login-knop in de mail om ' +
+                            'verder te gaan.',
+                    });
+
+                    form.reset();
                 }, function(response) {
                     form.errors = response.data;
                     form.submit = false;
@@ -193,14 +229,17 @@ kindpakketApp.controller('BaseController', [
             $('.popup-voucher').show();
         };
 
-        $rootScope.auth.activateVoucherSuccess = function(e) {
+        $rootScope.auth.activateVoucherSuccess = function(e, form) {
             e && e.stopPropagation() & e.preventDefault();
 
-            $scope.forms.voucher.reset();
+            $rootScope.modals.push({
+                icon: ['mdi-checkbox-multiple-marked-circle-outline'],
+                descLg: 'Er is een activatie mail gestuurd naar ' +
+                    form.values.email +
+                    '. Druk op de link in de E-mail om verder te gaan.',
+            });
 
-            $('body').addClass('popup-open');
-            $('.popups .popup').hide();
-            $('.popups .popup-voucher-success').show();
+            $scope.forms.voucher.reset();
         };
 
         $rootScope.auth.activateVoucherSubmit = function(e, form) {
@@ -215,10 +254,16 @@ kindpakketApp.controller('BaseController', [
                 form.values.code || 'empty',
                 form.values
             ).then(function(response) {
-                $rootScope.auth.activateVoucherSuccess();
+                $rootScope.auth.activateVoucherSuccess(false, form);
                 form.submit = false;
             }, function(response) {
                 form.errors = response.data;
+
+                if (form.values.code && form.errors.code)
+                    form.errors.code = ['Deze activatie code niet ' +
+                        'correct of reeds geactiveerd'
+                    ];
+
                 form.submit = false;
             });
         };
@@ -229,6 +274,30 @@ kindpakketApp.controller('BaseController', [
             $('body').removeClass('popup-open');
             $('.popup').hide();
         };
+
+        $rootScope.modals = new(function() {
+            var self = this;
+
+            modals = [];
+
+            self.count = function() {
+                return modals.length;
+            };
+
+            self.push = function(modal) {
+                modal.close = function(e) {
+                    e && e.stopPropagation() & e.preventDefault();
+                    console.log('asdasd');
+                    modals.splice(modals.indexOf(modal), 1);
+                };
+
+                modals.push(modal);
+            };
+
+            self.modals = function() {
+                return modals;
+            };
+        })();
 
         var fetchVoucher = function() {
             AuthService.getVoucher().then(function(response) {
@@ -580,6 +649,29 @@ kindpakketApp.directive('googleMap', [
                 GoogleMapService.getStyle().then(function(style) {
                     $scope.style = style.style;
                     initialize('map-canvas-contact');
+                });
+            }
+        };
+    }
+]);
+kindpakketApp.directive('popupModal', [
+    'ContactFormService',
+    'FormBuilderService',
+    function(
+        ContactFormService,
+        FormBuilderService
+    ) {
+        return {
+            restrict: 'A',
+            templateUrl: './tpl/directives/popup-modal.html',
+            replace: true,
+            transclude: true,
+            scope: {
+                modal: "="
+            },
+            link: function($scope, iElm, iAttrs, controller) {
+                $scope.$watch('modal', function(n, o ,s) {
+                    console.log(n);
                 });
             }
         };
