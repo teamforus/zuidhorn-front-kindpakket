@@ -1,14 +1,14 @@
 
 <header class="section section-header">
   <div class="wrapper">
-    <div class="section-header-inner" ng-show="$root.credentials"><a class="logo" ui-sref="landing"><img src="./assets/img/logo.png"/></a>
+    <div class="section-header-inner" ng-show="$root.credentials"><a class="logo" ui-sref="landing"><img src="./assets/img/logo.svg"/></a>
       <div class="section-header-actions">
         <div class="button-group">
           <div class="button button-white disabled"><span>Huidige Budget &nbsp; </span><strong>€</strong><strong ng-bind="$root.targetVoucher.funds"></strong></div><a class="button button-white" ui-sref="account"><span class="mdi mdi-account"></span>Mijn Account</a>
         </div><a class="button button-primary" href="#" ng-click="$root.auth.signOut($event)"><em class="mdi mdi-logout"></em>Logout</a>
       </div>
     </div>
-    <div class="section-header-inner" ng-show="!$root.credentials"><a class="logo" href="./"><img src="./assets/img/logo.png" alt=""/></a>
+    <div class="section-header-inner" ng-show="!$root.credentials"><a class="logo" href="./"><img src="./assets/img/logo.svg" alt=""/></a>
       <div class="section-header-actions"><a class="button button-success" href="#" ng-click="$root.auth.activateVoucher($event)"><em class="mdi mdi-ticket-confirmation"></em>Activatiecode</a><a class="button button-white" href="#" ng-click="$root.auth.signIn($event)"><em class="mdi mdi-account"></em>Login</a></div>
     </div>
     <div class="section-header-text">
@@ -103,7 +103,7 @@
               <div class="faq-ul-li-content" tabulation-pane="7">De voucher is vanaf 1 november 2017 1 jaar geldig.</div>
             </div>
             <div class="faq-ul-li">
-              <div class="faq-ul-li-title" tabulation-tab="8"> Hoe lang is de voucher geldig?<em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
+              <div class="faq-ul-li-title" tabulation-tab="8"> Kan ik de voucher ook aan iemand anders geven?<em class="mdi mdi-chevron-down"></em><em class="icon-active mdi mdi-chevron-up"></em></div>
               <div class="faq-ul-li-content" tabulation-pane="8">Nee, de voucher is strikt persoonlijk. U mag de voucher niet aan iemand geven. Maakt iemand anders wel gebruik van uw voucher dan wordt uw eigen budget lager.</div>
             </div>
             <div class="faq-ul-li">
