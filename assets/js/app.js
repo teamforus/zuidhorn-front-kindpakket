@@ -208,7 +208,7 @@ kindpakketApp.controller('BaseController', [
                     $rootScope.modals.push({
                         icon: ['mdi-checkbox-multiple-marked-circle-outline'],
                         descLg: 'Er is een E-mail verstuurd naar ' +
-                            $scope.forms.voucher.values.email +
+                            $scope.forms.login.values.email +
                             '. Druk op de login-knop in de mail om ' +
                             'verder te gaan.',
                     });
