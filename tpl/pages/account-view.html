@@ -55,7 +55,7 @@
               <td ng-bind="transaction.prety_date"></td>
               <td><strong class="text-primary" ng-bind="transaction.shopKeeper"></strong></td>
               <td> <strong>€ </strong><strong ng-bind="transaction.amount | to_fixed:2"></strong></td>
-              <td ng-bind="{success: 'Succes', 'pending-refund': 'Retour', refunded: 'Retour'}[transaction.status] || transaction.status"></td>
+              <td ng-bind="{success: 'Succes', 'refund': 'Retour', refunded: 'Retour'}[transaction.status] || transaction.status"></td>
             </tr>
           </tbody>
         </table>
