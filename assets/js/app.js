@@ -6,14 +6,50 @@
             var target = $root.attr('href');
 
             $root.unbind('click').bind('click', function() {
+                var offset = {
+                    y : parseInt($root.attr('offset-y') || 0)
+                };
+
                 $('html, body').animate({
-                    scrollTop: $(target).offset().top
-                }, 1600);
+                    scrollTop: Math.max(0, $(target).offset().top + offset.y)
+                }, 800);
+
+                setTimeout(function() {
+                    $(target).blink({
+                        blink_freq: 400,
+                        duration: 3000
+                    });
+                }, 800);
             });
         };
 
         for (var i = 0; i < this.length; i++) {
             new slowScroll($(this[i]));
+        }
+    };
+
+    $.prototype.blink = function(options) {
+        if (this.length == 0) return;
+
+        var blink = function($root, options) {
+            var interval = setInterval(function() {
+                options.duration -= options.blink_freq;
+
+                if (options.duration <= 0) {
+                    $root.css('opacity', 1);
+                    return clearInterval(interval);
+                }
+
+                if ($root.css('opacity') == 0) {
+                    $root.css('opacity', 1);
+                } else {
+                    $root.css('opacity', 0);
+                }
+            }, options.blink_freq);
+        };
+
+        for (var i = 0; i < this.length; i++) {
+            new blink($(this[i]), JSON.parse(JSON.stringify(options)));
         }
     };
 
@@ -436,6 +472,8 @@ kindpakketApp.component('landingComponent', {
                 e && e.stopPropagation() & e.preventDefault();
 
                 category.selected = !category.selected;
+
+                ctrl.updateOfficesCategory(e)
             };
 
             ctrl.updateOfficesCategory = function(e) {
@@ -587,7 +625,7 @@ kindpakketApp.directive('googleMap', [
                     var contentString = $element.attr("data-string");
                     var map, marker, infowindow;
                     var image = $element.attr("data-marker");
-                    var zoomLevel = parseInt($element.attr("data-zoom"), 8);
+                    var zoomLevel = 12;
                     var styledMap = new google.maps.StyledMapType($scope.style, {
                         name: "Styled Map"
                     });
@@ -595,7 +633,7 @@ kindpakketApp.directive('googleMap', [
                     var mapOptions = {
                         zoom: zoomLevel,
                         disableDefaultUI: false,
-                        center: office ? new google.maps.LatLng(office.lat, office.lon) : new google.maps.LatLng(-33.92, 151.25),
+                        center: new google.maps.LatLng(53.261723, 6.3950947),
                         scrollwheel: true,
                         fullscreenControl: false,
                         mapTypeControlOptions: {
@@ -605,8 +643,8 @@ kindpakketApp.directive('googleMap', [
 
                     map = new google.maps.Map(document.getElementById(obj), mapOptions);
 
-                    map.mapTypes.set('map_style', styledMap);
-                    map.setMapTypeId('map_style');
+                    // map.mapTypes.set('map_style', styledMap);
+                    // map.setMapTypeId('map_style');
 
                     infowindow = new google.maps.InfoWindow();
 
@@ -1054,3 +1092,11 @@ kindpakketApp.filter('to_fixed', function() {
         return parseFloat(_in).toFixed(size);
     }
 });
+
+kindpakketApp.filter('only_working_schedule', ['$filter', function($filter) {
+    return function(_in) {
+        return _in.filter(function(schedule) {
+            return schedule.start_time;
+        });
+    }
+}]);

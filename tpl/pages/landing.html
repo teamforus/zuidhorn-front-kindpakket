@@ -9,7 +9,7 @@
       </div>
     </div>
     <div class="section-header-inner" ng-show="!$root.credentials"><a class="logo" href="./"><img src="./assets/img/logo.svg" alt=""/></a>
-      <div class="section-header-actions"><a class="button button-success" href="#" ng-click="$root.auth.activateVoucher($event)"><em class="mdi mdi-ticket-confirmation"></em>Activatiecode</a><a class="button button-white" href="#" ng-click="$root.auth.signIn($event)"><em class="mdi mdi-account"></em>Login</a></div>
+      <div class="section-header-actions"><a class="button button-success" href="#" ng-click="$root.auth.activateVoucher($event)" id="activate-button"><em class="mdi mdi-ticket-confirmation"></em>Activatiecode</a><a class="button button-white" href="#" ng-click="$root.auth.signIn($event)"><em class="mdi mdi-account"></em>Login</a></div>
     </div>
     <div class="section-header-text">
       <div class="section-header-text-title"><strong>Zuidhorn. </strong>Kindpakket</div>
@@ -28,7 +28,7 @@
           <div class="office-li"><img class="office-li-thumb" ng-src="{{location.preview || 'assets/img/no-image.jpg'}}" alt=""/>
             <div class="office-li-name" ng-bind="location.shopkeeper.name"></div>
             <div class="office-li-description"><strong>Adres: </strong><span ng-bind="location.address || 'Geen data'"></span><br/><strong>Telefoonnummer: </strong><span ng-bind="location.phone || 'Geen data'"></span><br/><br/><strong class="text-primary">Openingstijden:</strong><br/>
-              <div><span class="br" ng-repeat="schedule in location.schedules track by $index"><strong>{{ ['MO', 'TU', 'WE', 'TH', 'FR'][$index] }}: </strong>{{ schedule.start_time }}-{{ schedule.end_time }}{{ $index < location.schedules.length - 1 ? ',' : '' }} </span></div>
+              <div><span class="br" ng-repeat="schedule in (location.schedules | only_working_schedule) track by $index"><strong>{{ ['Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za', 'Zo'][$index] }}: </strong>{{ schedule.start_time }}-{{ schedule.end_time }}{{ $index < ((location.schedules | only_working_schedule)).length - 1 ? ',' : '' }} </span></div>
             </div>
           </div>
         </div>
@@ -39,7 +39,7 @@
 </div>
 <div class="section section-categories">
   <div class="wrapper">
-    <h1 class="section-header">Kies de categorie van uw gewenste product om een overzicht te krijgen van de winkels die uw kindpakket voucher accepteren</h1>
+    <h1 class="section-header">Kies een of meerdere categorieën om het bovenstaande overzicht van deelnemende winkels te filteren</h1>
     <div class="categories-list">
       <div class="categories-list-inner">
         <div class="categories-item" ng-repeat="category in $ctrl.categories track by $index">
@@ -49,7 +49,7 @@
           </div>
         </div>
       </div>
-      <div class="categories-list-actions"><a class="button button-primary" href="#" ng-click="$ctrl.selectAll($event)"><em class="mdi mdi-chevron-double-right"></em>Selecteer Alles</a><a class="button button-success" href="#" ng-click="$ctrl.updateOfficesCategory($event)"><em class="mdi mdi-magnify"></em>Filter</a></div>
+      <div class="categories-list-actions" ng-show="false"><a class="button button-primary" href="#" ng-click="$ctrl.selectAll($event)"><em class="mdi mdi-chevron-double-right"></em>Selecteer Alles</a><a class="button button-success" href="#" ng-click="$ctrl.updateOfficesCategory($event)"><em class="mdi mdi-magnify"></em>Filter</a></div>
     </div>
   </div>
 </div>
@@ -58,14 +58,21 @@
   <div class="how-it-works-inner">
     <h1 class="how-it-works-title" id="how-it-works">Hoe het systeem werkt</h1>
     <div class="how-it-works-list">
-      <div class="how-it-works-item"> <em class="how-it-works-item-number">1</em>U heeft een brief van de gemeente ontvangen</div>
-      <div class="how-it-works-item"> <em class="how-it-works-item-number">2</em>In deze brief staat uw activatiecode</div>
-      <div class="how-it-works-item"> <em class="how-it-works-item-number">3</em>Via de acticatiecode knop op website wordt uw voucher geactiveerd.</div>
-      <div class="how-it-works-item"> <em class="how-it-works-item-number">4</em>U ziet vervolgens uw budget </div>
-      <div class="how-it-works-item"> <em class="how-it-works-item-number">5</em>U print uw voucher uit of u mailt de voucher naar uzelf toe</div>
-      <div class="how-it-works-item"> <em class="how-it-works-item-number">6</em>U kijkt vervolgens naar welke winkel(s) u wilt gaan</div>
-      <div class="how-it-works-item"> <em class="how-it-works-item-number">7</em>U zoekt één of meerdere prodducten uit en de winkelier scant uw voucher</div>
-      <div class="how-it-works-item"> <em class="how-it-works-item-number">8</em>De kosten worden direct in mindering gebracht op uw budget</div>
+            <div class="how-it-works-item"> <em class="how-it-works-item-icon"><img src="/kindpakket/assets/img/icon-steps/icon-text.png" alt=""/></em>
+              <h4 class="how-it-works-item-heading">Step <span class="text-primary">#1</span></h4>U heeft een een brief ontvangen van de Gemeente. In deze brief staat een activatiecode. Deze hebt u nodig voor stap 2.
+            </div>
+            <div class="how-it-works-item"> <em class="how-it-works-item-icon"><img src="/kindpakket/assets/img/icon-steps/icon-login.png" alt=""/></em>
+              <h4 class="how-it-works-item-heading">Step <span class="text-primary">#2</span></h4>Op de website waar u zich nu bevindt klikt u, boven aan de pagina, op <a href="#activate-button" class="text-primary" slow-scroll offset-y="-40">de groene knop</a> en logt u in met de activatiecode.
+            </div>
+            <div class="how-it-works-item"> <em class="how-it-works-item-icon"><img src="/kindpakket/assets/img/icon-steps/icon-envelope.png" alt=""/></em>
+              <h4 class="how-it-works-item-heading">Step <span class="text-primary">#3</span></h4>U ontvangt een mail een QR-code (nodig voor stap 5) en een link naar overzichtspagina van het kindpakket.
+            </div>
+            <div class="how-it-works-item"> <em class="how-it-works-item-icon"><img src="/kindpakket/assets/img/icon-steps/icon-qr-code.png" alt=""/></em>
+              <h4 class="how-it-works-item-heading">Step <span class="text-primary">#4</span></h4>Op de overzichtspagina staan de winkels waar u met de QR-Code terecht kunt. Print de QR-Code uit, of zorg dat deze als plaatje op uw telefoon staat. De Qr-Code kunt u steeds opnieuw gebruiken.
+            </div>
+            <div class="how-it-works-item"> <em class="how-it-works-item-icon"><img src="/kindpakket/assets/img/icon-steps/icon-shop-check.png" alt=""/></em>
+              <h4 class="how-it-works-item-heading">Step <span class="text-primary">#5</span></h4>Ga naar de winkel naar keuze. Laat de QR-Codezien. U krijgt het product voor uw kind mee.
+            </div>
     </div>
   </div>
 </div>
