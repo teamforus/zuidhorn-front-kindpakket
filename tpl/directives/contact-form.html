@@ -5,7 +5,7 @@
     <div class="contact-inner">
       <div class="contact-title">Contactformulier</div>
       <div class="contact-subtitle">Stuur ons een bericht door middel van het contactformulier.</div>
-      <form class="contact-form form" action="#">
+      <form class="contact-form form" ng-submit="submitContactForm($event, forms.contact_form)">
         <div class="contact-form-inner">
           <div ng-show="!forms.contact_form.success">
             <div class="row">
@@ -55,7 +55,8 @@
                   <p class="text-danger" ng-repeat="error in forms.contact_form.errors.message track by $index" ng-bind="error"></p>
                 </div>
               </div>
-            </div><a class="button button-success submit-button" type="submit" ng-click="submitContactForm($event, forms.contact_form)" href="#">Verstuur Bericht</a>
+            </div>
+            <button class="button button-success submit-button" type="submit">Verstuur Bericht</button>
           </div>
           <div ng-show="forms.contact_form.success">
             <div class="row">
