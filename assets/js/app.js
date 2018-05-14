@@ -296,8 +296,8 @@ kindpakketApp.controller('BaseController', [
                 form.errors = response.data;
 
                 if (form.values.code && form.errors.code)
-                    form.errors.code = ['Deze activatie code niet ' +
-                        'correct of reeds geactiveerd'
+                    form.errors.code = ['Deze activatie code is niet ' +
+                        'correct of is reeds geactiveerd'
                     ];
 
                 form.submit = false;
